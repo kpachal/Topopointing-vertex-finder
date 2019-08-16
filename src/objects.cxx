@@ -1,5 +1,7 @@
 #include "topopointing/objects.h"
 
+#include <iostream>
+
 Topocluster::Topocluster() :
   m_clusterlocation(),
   m_clusteraxis() {
@@ -10,10 +12,10 @@ Topocluster::Topocluster() :
   m_phi = 0;
 }
 
-Topocluster::Topocluster :
+Topocluster::Topocluster(float x, float y, float z, float delta_phi, float delta_theta, float delta_alpha) :
   m_clusterlocation(),
   m_clusteraxis()
-  (float x, float y, float z, float delta_phi, float delta_theta, float delta_alpha) {
+  {
 
   // Basic coordinates are easy.
   m_x = x;
@@ -36,7 +38,7 @@ Topocluster::Topocluster :
   // angles between the cluster location and cluster axis.
   if (delta_alpha > 0) {
     float compare_angle = m_clusterlocation.Angle(m_clusteraxis);
-    if ((compare_angle - delta_alpha)/delta_alpha) > 0.01 {
+    if ((compare_angle - delta_alpha)/delta_alpha > 0.01) {
       std::cout << "Angles not matching well! Delta alpha: " << delta_alpha << "; our angle " << compare_angle << std::endl;
     }
 

@@ -21,7 +21,8 @@ class TopoFitter {
 
     ROOT::Minuit2::Minuit2Minimizer * m_MinuitMinimizer;
 
-    TVector3 m_decaylocation;
+    std::vector<Topocluster> m_topoclusters;
+    TVector3 m_decayLocation;
 
 };
 

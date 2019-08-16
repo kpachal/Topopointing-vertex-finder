@@ -24,6 +24,8 @@ set(test_stoppedparticles_SRC
     tests/test_stoppedparticles.cxx)
 
 set(test_AOD_SRC
+    src/objects.cxx
+    src/topo_fitter.cxx
     tests/test_AOD.cxx)
 
 # Make me a setup script directly in the build directory

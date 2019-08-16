@@ -9,6 +9,9 @@
 #include <TLorentzVector.h>
 #include <ROOT/RDataFrame.hxx>
 
+#include "topopointing/topo_fitter.h"
+#include "topopointing/objects.h"
+
 using namespace ROOT; // RDataFrame's namespace
 
 
@@ -45,6 +48,22 @@ int main(int argc, char* argv[]) {
     std::cout << "Running over file: " << input_filename << std::endl;
     std::vector<std::string> files_to_use = {input_filename};
 
+    // Make the fitter.
+    TopoFitter fitter;
+
+    // Pure tests, nothing else
+    float z = 0;
+    Topocluster cluster1(100,0,z,0,0);
+    Topocluster cluster2(0,100,z,0,0);
+    Topocluster cluster3(-100,0,z,0,0);
+    Topocluster cluster4(0,-100,z,0,0);
+    std::vector<Topocluster> toy_clusters = {cluster1, cluster2, cluster3, cluster4};
+
+    vertex_location candidate = fitter.getBestFitVertex(toy_clusters);
+
+    std::cout << "Candidate x, y, z: " << candidate.x << ", " << candidate.y << ", " << candidate.z << std::endl;
+
+/*
     // Make the RDataFrame!
     RDataFrame frame(tree_name, files_to_use);
 
@@ -60,7 +79,7 @@ int main(int argc, char* argv[]) {
     output_file->cd();
     for (auto hist: hists_to_write) hist.GetValue().Write();
     output_file->Close();
-
+*/
     std::cout << "End." << std::endl;
 
 }
