@@ -1,8 +1,10 @@
 #ifndef TOPOFITTER_H
 #define TOPOFITTER_H
 
-#include "topopointing/objects.h"
+#include "TVector3.h"
 #include "Minuit2/Minuit2Minimizer.h"
+
+#include "topopointing/objects.h"
 
 class TopoFitter {
 
@@ -14,9 +16,12 @@ class TopoFitter {
 
   private :
 
+    float logLikelihood(const float *params);
+
 
     ROOT::Minuit2::Minuit2Minimizer * m_MinuitMinimizer;
 
+    TVector3 m_decaylocation;
 
 };
 

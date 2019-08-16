@@ -1,7 +1,5 @@
 #include "topopointing/objects.h"
 
-#include "TVector3.h"
-
 Topocluster::Topocluster() :
   m_clusterlocation(),
   m_clusteraxis() {

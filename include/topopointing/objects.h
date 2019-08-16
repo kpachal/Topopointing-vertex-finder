@@ -22,6 +22,10 @@ class Topocluster {
     // calculations match.
     Topocluster(float x, float y, float z, float delta_phi, float delta_theta, float delta_alpha = -1);
 
+    // Accessing values
+    TVector3 axis() {return m_clusteraxis; }
+    TVector3 location() {return m_clusterlocation; }
+
   private :
 
     // Locations of cluster center
