@@ -15,7 +15,11 @@ using namespace ROOT; // RDataFrame's namespace
 // Do analysis
 int main(int argc, char* argv[]) {
 
+    // NTUPs
     std::string input_filename = "/eos/atlas/atlascerngroupdisk/phys-susy/Stopped_ANA-SUSY-2018-15/ntuple/testFiles/signal/v3/output_g1400_n1200_mass5_cosmicsReco_20190813_15-36-32_v3/hist-g1400_n1200_mass5_cosmicsReco.root";
+
+    // AODs
+    //std::string input_filename = "/afs/cern.ch/work/o/oabouzei/public/Stop-RecoTime/stopped_g1400_n400_mass5_ColReco/stopped_g1400_n400_mass5.AOD.root";
 
     std::string tree_name = "Nominal/BaseSelection_tree_finalSelection";
 

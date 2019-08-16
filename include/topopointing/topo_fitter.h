@@ -10,7 +10,7 @@ class TopoFitter {
 
     TopoFitter();
 
-    vertex_location getBestFitVertex(std::vector<topocluster> clusters);
+    vertex_location getBestFitVertex(std::vector<Topocluster> clusters);
 
   private :
 
