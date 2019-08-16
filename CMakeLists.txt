@@ -23,10 +23,21 @@ root_generate_dictionary(G__dictionary
 set(test_stoppedparticles_SRC
     tests/test_stoppedparticles.cxx)
 
+set(test_AOD_SRC
+    tests/test_AOD.cxx)
+
+# Make me a setup script directly in the build directory
+configure_file(tools/setup.sh.in setup.sh @ONLY)
+
 # Tell CMake to create the executables
 add_executable(test_StoppedParticles
                ${test_stoppedparticles_SRC}
                G__dictionary.cxx)
 
-target_link_libraries(test_StoppedParticles ${ROOT_LIBRARIES})
+add_executable(test_AOD
+               ${test_AOD_SRC}
+               G__dictionary.cxx)
 
+
+target_link_libraries(test_StoppedParticles ${ROOT_LIBRARIES})
+target_link_libraries(test_AOD ${ROOT_LIBRARIES})
