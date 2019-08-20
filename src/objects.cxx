@@ -1,6 +1,7 @@
 #include "topopointing/objects.h"
 
 #include <iostream>
+#include <cmath>
 
 Topocluster::Topocluster() :
   m_clusterlocation(),
@@ -36,10 +37,12 @@ Topocluster::Topocluster(float x, float y, float z, float delta_phi, float delta
   // Now we can do a cross check if we want!
   // Ensure that we get delta_alpha if we take the
   // angles between the cluster location and cluster axis.
-  if (delta_alpha > 0) {
+  if (delta_alpha > -1) {
     float compare_angle = m_clusterlocation.Angle(m_clusteraxis);
-    if ((compare_angle - delta_alpha)/delta_alpha > 0.01) {
+    if (fabs(compare_angle - delta_alpha) > 0.005) {
       std::cout << "Angles not matching well! Delta alpha: " << delta_alpha << "; our angle " << compare_angle << std::endl;
+    } else {
+      std::cout << "Angles agree within 0.005. Good!" << std::endl;
     }
 
   } else {
