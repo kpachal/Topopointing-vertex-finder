@@ -12,7 +12,7 @@ class TopoFitter {
 
     TopoFitter();
 
-    vertex_location getBestFitVertex(std::vector<Topocluster> clusters);
+    vertex_location getBestFitVertex(const std::vector<Topocluster>& clusters);
 
   private :
 
@@ -21,7 +21,7 @@ class TopoFitter {
 
     ROOT::Minuit2::Minuit2Minimizer * m_MinuitMinimizer;
 
-    std::vector<Topocluster> m_topoclusters;
+    const std::vector<Topocluster> * m_topoclusters;
     TVector3 m_decayLocation;
 
 };

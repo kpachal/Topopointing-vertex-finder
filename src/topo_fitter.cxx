@@ -3,7 +3,7 @@
 #include "topopointing/topo_fitter.h"
 
 TopoFitter::TopoFitter() :
-  m_topoclusters(),
+  m_topoclusters(NULL),
   m_decayLocation()
 {
   return;
@@ -26,7 +26,7 @@ float TopoFitter::logLikelihood(const float *params) {
   // We also then have to return the negative so that the minimisation picks a max.
 
   float log_l = 0;
-  for (auto topo : m_topoclusters) {
+  for (auto topo : *m_topoclusters) {
     TVector3 vertexToTopo = topo.location() - m_decayLocation;
     float alpha = vertexToTopo.Angle(topo.axis());
     log_l += log(cos(alpha));
@@ -36,13 +36,13 @@ float TopoFitter::logLikelihood(const float *params) {
 
 }
 
-vertex_location TopoFitter::getBestFitVertex(std::vector<Topocluster> clusters) {
+vertex_location TopoFitter::getBestFitVertex(const std::vector<Topocluster>& clusters) {
 
   // Object will hold output of fit
   vertex_location vertex;
 
-  // Set topoclusters as dataset
-  m_topoclusters = clusters;
+  // Store a pointer to the clusters as our dataset.
+  m_topoclusters = &clusters;
 
   // Perform fit
 
