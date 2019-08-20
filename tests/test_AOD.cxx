@@ -14,6 +14,16 @@
 
 using namespace ROOT; // RDataFrame's namespace
 
+std::vector<Topocluster> build_clusters(const std::vector<float>& x, const std::vector<float>& y, const std::vector<float>& z, const std::vector<float>& dphi, const std::vector<float>& dtheta, const std::vector<float>& dalpha) {
+
+  std::vector<Topocluster> clusters;
+  for (unsigned int i=0; i<x.size(); i++) {
+    Topocluster cluster(x.at(i),y.at(i),z.at(i),dphi.at(i),dtheta.at(i),dalpha.at(i));
+    clusters.push_back(cluster);
+  }
+  return clusters;
+
+}
 
 // Do analysis
 int main(int argc, char* argv[]) {
@@ -51,27 +61,31 @@ int main(int argc, char* argv[]) {
     // Make the fitter.
     TopoFitter fitter;
 
-    // Pure tests, nothing else
-    float z = 0;
-    Topocluster cluster1(100,0,z,0,0);
-    Topocluster cluster2(0,100,z,0,0);
-    Topocluster cluster3(-100,0,z,0,0);
-    Topocluster cluster4(0,-100,z,0,0);
-    std::vector<Topocluster> toy_clusters = {cluster1, cluster2, cluster3, cluster4};
-
-    vertex_location candidate = fitter.getBestFitVertex(toy_clusters);
-
-    std::cout << "Candidate x, y, z: " << candidate.x << ", " << candidate.y << ", " << candidate.z << std::endl;
-
-/*
     // Make the RDataFrame!
     RDataFrame frame(tree_name, files_to_use);
 
-    // For each event, want to see if I can access aux data.
-    auto hist_e = frame.Histo1D({"calE","calE",50,0,500.0}, "CaloCalTopoClustersAuxDyn.calE");
-    auto hist_eta = frame.Histo1D({"calEta","calEta",50,-3.0,3.0}, "CaloCalTopoClustersAuxDyn.calEta");
-    auto hist_avg_lar_q = frame.Histo1D({"AVG_LAR_Q","AVG_LAR_Q",50,0,5.0}, "CaloCalTopoClustersAuxDyn.AVG_LAR_Q");
-    std::vector<ROOT::RDF::RResultPtr<TH1D> > hists_to_write = {hist_e,hist_eta,hist_avg_lar_q};
+    // Assemble cluster objects using the AOD information. 
+    // Not trying to use xAOD objects right now - too complicated.
+    auto has_clusters = frame.Define("clusters", build_clusters, 
+                                     {"CaloCalTopoClustersAuxDyn.CENTER_X", "CaloCalTopoClustersAuxDyn.CENTER_Y", "CaloCalTopoClustersAuxDyn.CENTER_Z", "CaloCalTopoClustersAuxDyn.DELTA_PHI","CaloCalTopoClustersAuxDyn.DELTA_THETA", "CaloCalTopoClustersAuxDyn.DELTA_ALPHA"});
+
+    auto has_fits = has_clusters.Define("vertex_candidates",
+                                [&fitter](std::vector<Topocluster> clusters) 
+                                { vertex_location candidate = fitter.getBestFitVertex(clusters);
+                                  std::cout << "Candidate x, y, z: " << candidate.x << ", " << candidate.y << ", " << candidate.z << std::endl;
+                                  return candidate;
+                                }, 
+                                {"clusters"} );
+
+    // First set of plots: results and AOD inputs alone
+
+    // Estimated vertex location
+
+    // Error size as a function of estimated vertex location
+
+    // Now do some things to compare estimated vertex to the analysis ntuples:
+    // should this be in separate stopped particle code?
+/*
 
     // Make output file to save the histograms
     std::cout << "Making output file " << output_filename << std::endl;
