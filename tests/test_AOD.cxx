@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     auto has_clusters = frame.Define("clusters", build_clusters, 
                                      {"CaloCalTopoClustersAuxDyn.CENTER_X", "CaloCalTopoClustersAuxDyn.CENTER_Y", "CaloCalTopoClustersAuxDyn.CENTER_Z", "CaloCalTopoClustersAuxDyn.DELTA_PHI","CaloCalTopoClustersAuxDyn.DELTA_THETA", "CaloCalTopoClustersAuxDyn.DELTA_ALPHA"});
 
-    auto has_fits = has_clusters.Define("vertex_candidates",
+    auto has_fits = has_clusters.Define("vertex_candidate",
                                 [&fitter](std::vector<Topocluster> clusters) 
                                 { vertex_location candidate = fitter.getBestFitVertex(clusters);
                                   std::cout << "Candidate x, y, z: " << candidate.x << ", " << candidate.y << ", " << candidate.z << std::endl;
@@ -77,23 +77,28 @@ int main(int argc, char* argv[]) {
                                 }, 
                                 {"clusters"} );
 
-    // First set of plots: results and AOD inputs alone
+    // Store plots
+    std::vector<ROOT::RDF::RResultPtr<TH1D> > outputs;    
+
+    // First set of plots: results and AOD inputs alone.
 
     // Estimated vertex location
+    auto vertex_x = has_fits.Define("vtx_x",[](vertex_location vertex){return vertex.x;}, {"vertex_candidate"}).Histo1D({"estimated_vertex_x","estimated_vertex_x",501,-10,5000},"vtx_x");
+    outputs.push_back(vertex_x);
 
     // Error size as a function of estimated vertex location
 
     // Now do some things to compare estimated vertex to the analysis ntuples:
     // should this be in separate stopped particle code?
-/*
+
 
     // Make output file to save the histograms
     std::cout << "Making output file " << output_filename << std::endl;
     TFile * output_file = new TFile(output_filename.c_str(),"RECREATE");
     output_file->cd();
-    for (auto hist: hists_to_write) hist.GetValue().Write();
+    for (auto hist: outputs) hist.GetValue().Write();
     output_file->Close();
-*/
+
     std::cout << "End." << std::endl;
 
 }

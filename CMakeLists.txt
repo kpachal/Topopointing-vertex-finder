@@ -14,13 +14,15 @@ include_directories(tests)
 
 root_generate_dictionary(G__dictionary
                          topopointing/objects.h
-                         topopointing/topo_fitter.h)
-#                         LINKDEF
-#                         LinkDef.h)
+                         topopointing/topo_fitter.h
+                         LINKDEF
+                         LinkDef.h)
 
 # Add other .cxx files here if/when they exist
 # and dont' forget to set classes in LinkDef
 set(test_stoppedparticles_SRC
+    src/objects.cxx
+    src/topo_fitter.cxx
     tests/test_stoppedparticles.cxx)
 
 set(test_AOD_SRC
