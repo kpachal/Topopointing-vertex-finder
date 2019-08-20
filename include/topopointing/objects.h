@@ -49,12 +49,12 @@ class Topocluster {
 
 struct vertex_location {
 
-  float x;
-  float dx;
-  float y;
-  float dy;
-  float z;
-  float dz;
+  float x = -999;
+  float dx = 0;
+  float y = -999;
+  float dy = 0;
+  float z = -999;
+  float dz = 0;
 
 };
 
